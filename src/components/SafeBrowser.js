@@ -8,15 +8,17 @@ const SafeBrowser = () => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    // POST request using fetch inside useEffect React hook
     const requestOptions = {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
         client: {
           clientId: "rkd412",
           clientVersion: "1.0",
         },
+
         threatInfo: {
           threatTypes: ["MALWARE", "SOCIAL_ENGINEERING"],
           platformTypes: ["WINDOWS"],
@@ -29,7 +31,7 @@ const SafeBrowser = () => {
             },
           ],
         },
-      },
+      }),
     };
 
     fetch(
@@ -42,9 +44,7 @@ const SafeBrowser = () => {
           setIsLoaded(true);
           setItems(result);
         },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
+
         (error) => {
           setIsLoaded(true);
           setError(error);
@@ -81,9 +81,6 @@ const SafeBrowser = () => {
           {" "}
           The data is <b>{isLoaded ? "currently" : "not"}</b> loaded.
         </div>
-        {items.map((d) => (
-          <div>{d}</div>
-        ))}
       </form>
     </>
   );
