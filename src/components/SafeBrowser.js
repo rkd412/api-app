@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 
-const SafeBrowser = () => {
-  const [formValue, setFormValue] = useState([]);
-  const [urlToCheck, setUrlToCheck] = useState([]);
-  const [error, setError] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [items, setItems] = useState([]);
+import styles from "./SafeBrowser.module.css";
 
-  useEffect(() => {
+const SafeBrowser = () => {
+  const [isSafe, setIsSafe] = useState(null);
+  const [urlToCheck, setUrlToCheck] = useState("");
+  const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(null);
+  const [items, setItems] = useState(null);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
     const requestOptions = {
       method: "POST",
       headers: {
@@ -23,13 +26,7 @@ const SafeBrowser = () => {
           threatTypes: ["MALWARE", "SOCIAL_ENGINEERING"],
           platformTypes: ["WINDOWS"],
           threatEntryTypes: ["URL"],
-          threatEntries: [
-            { url: "https://testsafebrowsing.appspot.com/s/phishing.html" },
-            { url: "https://testsafebrowsing.appspot.com/s/malware.html" },
-            {
-              url: "https://testsafebrowsing.appspot.com/s/malware_in_iframe.html",
-            },
-          ],
+          threatEntries: [{ url: urlToCheck }],
         },
       }),
     };
@@ -41,48 +38,65 @@ const SafeBrowser = () => {
       .then((result) => result.json())
       .then(
         (result) => {
-          setIsLoaded(true);
           setItems(result);
+          setIsLoaded(true);
+          setIsLoaded(false);
         },
 
         (error) => {
-          setIsLoaded(true);
           setError(error);
+          setIsLoaded(true);
+          setIsLoaded(false);
         }
       );
-  }, []);
-
-  const handleValueChange = (e) => {
-    e.preventDefault();
-    setFormValue(e.target.value);
-    console.log(formValue);
   };
 
-  const handleSubmit = (e) => {
+  const valueChangeHandler = (e) => {
     e.preventDefault();
-    setUrlToCheck(formValue);
-    console.log(items);
-    console.log(error);
+    setUrlToCheck(e.target.value);
   };
+
+  useEffect(() => {
+    if (items === []) {
+      setIsSafe(true);
+    } else if (items === []) {
+      setIsSafe(false);
+    }
+  }, [isLoaded]);
+
+  useEffect(
+    () =>
+      isLoaded
+        ? console.log(items) && console.log(error)
+        : "The fuck happened?",
+    [isLoaded]
+  );
 
   return (
-    <>
-      <h1>Security Check</h1>
+    <div
+      className={
+        isSafe === null
+          ? styles[""]
+          : isSafe === "safe"
+          ? styles["safe"]
+          : styles["not-safe"]
+      }
+    >
+      <h1>URL Safety Check</h1>
       <form>
         <label>
-          Check URL
-          <input type="text" name="URL" onChange={handleValueChange} />
+          <input
+            type="text"
+            name="URL"
+            placeHolder="Enter URL here..."
+            onChange={valueChangeHandler}
+          />
         </label>
-        <button onClick={handleSubmit} type="button" value="Submit">
+        <button onClick={submitHandler} type="button" value="Submit">
           Submit
         </button>
-        <div>{urlToCheck}</div>
-        <div>
-          {" "}
-          The data is <b>{isLoaded ? "currently" : "not"}</b> loaded.
-        </div>
       </form>
-    </>
+    </div>
   );
 };
 
