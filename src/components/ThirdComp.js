@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 
-import styles from "./SafeBrowser.module.css";
+import styles from "./ThirdComp.module.css";
 
-const SafeBrowser = () => {
+const ThirdComp = () => {
   const [isSafe, setIsSafe] = useState("");
   const [urlToCheck, setUrlToCheck] = useState("");
   const [error, setError] = useState(null);
@@ -32,6 +32,7 @@ const SafeBrowser = () => {
     };
 
     fetch(
+      "https://safebrowsing.googleapis.com/v4/threatMatches:find?key=AIzaSyDg3gYkdfwSjTFl3492xScXAOYfKGTM2ns",
       requestOptions
     )
       .then((result) => result.json())
@@ -73,30 +74,7 @@ const SafeBrowser = () => {
     [isLoaded, items, error]
   );
 
-  return (
-    <div
-      className={
-        isSafe === ""
-          ? styles[""]
-          : isSafe === "safe"
-          ? styles["safe"]
-          : styles["unsafe"]
-      }
-    >
-      <h1>URL Safety Check</h1>
-      <label>
-        <input
-          type="text"
-          name="URL"
-          placeholder="Enter URL here..."
-          onChange={valueChangeHandler}
-        />
-      </label>
-      <button onClick={submitHandler} type="button" value="Submit">
-        Submit
-      </button>
-    </div>
-  );
+  return <div>Goodbye Cruel World</div>;
 };
 
-export default SafeBrowser;
+export default ThirdComp;
