@@ -32,7 +32,7 @@ const ThirdComp = () => {
     };
 
     fetch(
-      "https://safebrowsing.googleapis.com/v4/threatMatches:find?key=AIzaSyDg3gYkdfwSjTFl3492xScXAOYfKGTM2ns",
+     "",
       requestOptions
     )
       .then((result) => result.json())

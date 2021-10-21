@@ -31,9 +31,7 @@ const SafeBrowser = () => {
       }),
     };
 
-    fetch(
-      requestOptions
-    )
+    fetch("", requestOptions)
       .then((result) => result.json())
       .then(
         (result) => {
