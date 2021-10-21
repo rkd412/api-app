@@ -31,10 +31,7 @@ const ThirdComp = () => {
       }),
     };
 
-    fetch(
-     "",
-      requestOptions
-    )
+    fetch("", requestOptions)
       .then((result) => result.json())
       .then(
         (result) => {
@@ -74,7 +71,11 @@ const ThirdComp = () => {
     [isLoaded, items, error]
   );
 
-  return <div>Goodbye Cruel World</div>;
+  return (
+    <div className={styles["container"]}>
+      <h1>Third API Component</h1>
+    </div>
+  );
 };
 
 export default ThirdComp;

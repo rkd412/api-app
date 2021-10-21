@@ -3,11 +3,11 @@ import React, { useState, useEffect } from "react";
 import styles from "./SafeBrowser.module.css";
 
 const SafeBrowser = () => {
-  const [isSafe, setIsSafe] = useState("");
+  const [isSafe, setIsSafe] = useState("neutral");
   const [urlToCheck, setUrlToCheck] = useState("");
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(null);
-  const [items, setItems] = useState(null);
+  const [items, setItems] = useState("");
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -51,11 +51,12 @@ const SafeBrowser = () => {
   const valueChangeHandler = (e) => {
     e.preventDefault();
     setUrlToCheck(e.target.value);
+    setIsSafe("neutral");
   };
 
   useEffect(() => {
-    if (items === null) {
-      setIsSafe("");
+    if (items === "") {
+      setIsSafe("neutral");
     } else if (Object.entries(items).length === 0) {
       setIsSafe("safe");
     } else {
@@ -74,14 +75,14 @@ const SafeBrowser = () => {
   return (
     <div
       className={
-        isSafe === ""
-          ? styles[""]
+        isSafe === "neutral"
+          ? styles["neutral"]
           : isSafe === "safe"
           ? styles["safe"]
           : styles["unsafe"]
       }
     >
-      <h1>URL Safety Check</h1>
+      <h1>URL Safety Checker</h1>
       <label>
         <input
           type="text"
@@ -93,6 +94,11 @@ const SafeBrowser = () => {
       <button onClick={submitHandler} type="button" value="Submit">
         Submit
       </button>
+      {items && isSafe === "unsafe" ? (
+        <p className={styles["clickable"]}>{items.matches[0].threatType}</p>
+      ) : (
+        <p></p>
+      )}
     </div>
   );
 };

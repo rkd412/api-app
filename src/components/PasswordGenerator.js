@@ -3,78 +3,58 @@ import React, { useState, useEffect } from "react";
 import styles from "./PasswordGenerator.module.css";
 
 const PasswordGenerator = () => {
-  const [isSafe, setIsSafe] = useState("");
-  const [urlToCheck, setUrlToCheck] = useState("");
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(null);
-  const [items, setItems] = useState(null);
+  const [newPassword, setNewPassword] = useState(null);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        client: {
-          clientId: "rkd412",
-          clientVersion: "1.0",
-        },
-
-        threatInfo: {
-          threatTypes: ["MALWARE", "SOCIAL_ENGINEERING"],
-          platformTypes: ["WINDOWS"],
-          threatEntryTypes: ["URL"],
-          threatEntries: [{ url: urlToCheck }],
-        },
-      }),
-    };
 
     fetch(
-      "",
-      requestOptions
+      "https://passwordinator.herokuapp.com/generate?num=true&char=true&caps=true&len=14"
     )
       .then((result) => result.json())
       .then(
         (result) => {
-          setItems(result);
+          setNewPassword(result);
           setIsLoaded(true);
-          setIsLoaded(false);
         },
 
         (error) => {
           setError(error);
           setIsLoaded(true);
-          setIsLoaded(false);
         }
       );
   };
 
-  const valueChangeHandler = (e) => {
-    e.preventDefault();
-    setUrlToCheck(e.target.value);
+  const copyHandler = () => {
+    navigator.clipboard.writeText(newPassword.data);
+    window.alert("Password copied to clipboard.");
   };
-
-  useEffect(() => {
-    if (items === null) {
-      setIsSafe("");
-    } else if (Object.entries(items).length === 0) {
-      setIsSafe("safe");
-    } else {
-      setIsSafe("unsafe");
-    }
-  }, [isLoaded, items]);
 
   useEffect(
     () =>
       isLoaded
-        ? console.log(items) && console.log(error)
+        ? console.log(newPassword) && console.log(error)
         : "The fuck happened?",
-    [isLoaded, items, error]
+    [isLoaded, newPassword, error]
   );
 
-  return <div>hello world</div>;
+  return (
+    <div className={styles["container"]}>
+      <h1>Secure Password Generator</h1>
+      {isLoaded && newPassword ? (
+        <h3 className={styles["clickable"]} onClick={copyHandler}>
+          {newPassword.data}
+        </h3>
+      ) : (
+        <h3>**************</h3>
+      )}
+      <button onClick={submitHandler} type="button" value="Submit">
+        New Password
+      </button>
+    </div>
+  );
 };
 
 export default PasswordGenerator;
