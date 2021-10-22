@@ -42,7 +42,7 @@ const PasswordGenerator = () => {
 
   return (
     <div className={styles["container"]}>
-      <h1>Secure Password Generator</h1>
+      <h1>Password Generator</h1>
       {isLoaded && newPassword ? (
         <h3 className={styles["clickable"]} onClick={copyHandler}>
           {newPassword.data}
@@ -50,7 +50,7 @@ const PasswordGenerator = () => {
       ) : (
         <h3>**************</h3>
       )}
-      <button onClick={submitHandler} type="button" value="Submit">
+      <button onClick={submitHandler}>
         New Password
       </button>
     </div>

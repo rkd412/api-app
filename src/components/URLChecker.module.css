@@ -1,0 +1,21 @@
+.neutral {
+  padding: 40px;
+}
+
+.safe {
+  background: #dff2bf;
+  padding: 40px;
+}
+
+.safe p {
+  color: #4f8a10;
+}
+
+.unsafe {
+  background: #ffd2d2;
+  padding: 40px;
+}
+
+.unsafe p {
+  color: #d8000c;
+}

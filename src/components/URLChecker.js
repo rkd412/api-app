@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-import styles from "./SafeBrowser.module.css";
+import validator from "validator";
 
-const SafeBrowser = () => {
+import styles from "./URLChecker.module.css";
+
+const URLChecker = () => {
   const [isSafe, setIsSafe] = useState("neutral");
   const [urlToCheck, setUrlToCheck] = useState("");
   const [error, setError] = useState(null);
@@ -10,47 +12,52 @@ const SafeBrowser = () => {
   const [items, setItems] = useState("");
 
   const submitHandler = (e) => {
-    e.preventDefault();
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        client: {
-          clientId: "rkd412",
-          clientVersion: "1.0",
+    if (!validator.isURL(urlToCheck)) {
+      alert("Enter valid URL!");
+    } else {
+      e.preventDefault();
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          client: {
+            clientId: "rkd412",
+            clientVersion: "1.0",
+          },
 
-        threatInfo: {
-          threatTypes: ["MALWARE", "SOCIAL_ENGINEERING"],
-          platformTypes: ["WINDOWS"],
-          threatEntryTypes: ["URL"],
-          threatEntries: [{ url: urlToCheck }],
-        },
-      }),
-    };
+          threatInfo: {
+            threatTypes: ["MALWARE", "SOCIAL_ENGINEERING"],
+            platformTypes: ["WINDOWS"],
+            threatEntryTypes: ["URL"],
+            threatEntries: [{ url: urlToCheck }],
+          },
+        }),
+      };
 
-    fetch("", requestOptions)
-      .then((result) => result.json())
-      .then(
-        (result) => {
-          setItems(result);
-          setIsLoaded(true);
-          setIsLoaded(false);
-        },
+      fetch("", requestOptions)
+        .then((result) => result.json())
+        .then(
+          (result) => {
+            setItems(result);
+            setIsLoaded(true);
+            setIsLoaded(false);
+          },
 
-        (error) => {
-          setError(error);
-          setIsLoaded(true);
-          setIsLoaded(false);
-        }
-      );
+          (error) => {
+            setError(error);
+            setIsLoaded(true);
+            setIsLoaded(false);
+          }
+        );
+    }
   };
 
   const valueChangeHandler = (e) => {
     e.preventDefault();
     setUrlToCheck(e.target.value);
+    console.log(validator.isURL(urlToCheck));
     setIsSafe("neutral");
   };
 
@@ -91,16 +98,13 @@ const SafeBrowser = () => {
           onChange={valueChangeHandler}
         />
       </label>
-      <button onClick={submitHandler} type="button" value="Submit">
-        Submit
-      </button>
-      {items && isSafe === "unsafe" ? (
+      <button onClick={submitHandler}>Submit</button>
+      {items && isSafe === "unsafe" && (
         <p className={styles["clickable"]}>{items.matches[0].threatType}</p>
-      ) : (
-        <p></p>
       )}
+      {items && isSafe === "safe" && <p>Seems alright! No Matches</p>}
     </div>
   );
 };
 
-export default SafeBrowser;
+export default URLChecker;

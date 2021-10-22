@@ -7,11 +7,11 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 
-import SafeBrowser from "./components/SafeBrowser";
+import URLChecker from "./components/URLChecker";
 import PasswordGenerator from "./components/PasswordGenerator";
-import ThirdComp from "./components/ThirdComp";
+import EmailChecker from "./components/EmailChecker";
 
-import styles from "./App.module.css";
+console.log(process.env.REACT_APP_GOOGLE_API_KEY);
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -26,7 +26,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <Typography component={"span"}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -74,21 +74,23 @@ const App = () => {
           <Tabs
             value={value}
             onChange={handleChange}
-            aria-label="Different Security APIs"
+            variant="scrollable"
+            scrollButtons
+            allowScrollButtonsMobile
           >
             <Tab label="URL Checker" {...a11yProps(0)} />
             <Tab label="Password Generator" {...a11yProps(1)} />
-            <Tab label="Third Component" {...a11yProps(2)} />
+            <Tab label="Email Checker" {...a11yProps(2)} />
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-          <SafeBrowser />
+          <URLChecker />
         </TabPanel>
         <TabPanel value={value} index={1}>
           <PasswordGenerator />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          <ThirdComp />
+          <EmailChecker />
         </TabPanel>
       </Box>
     </Grid>
