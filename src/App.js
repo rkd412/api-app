@@ -11,8 +11,6 @@ import URLChecker from "./components/URLChecker";
 import PasswordGenerator from "./components/PasswordGenerator";
 import EmailChecker from "./components/EmailChecker";
 
-console.log(process.env.REACT_APP_GOOGLE_API_KEY);
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 

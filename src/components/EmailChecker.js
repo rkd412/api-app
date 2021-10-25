@@ -17,21 +17,27 @@ const EmailChecker = () => {
       setIsSafe("neutral");
     } else {
       e.preventDefault();
-      fetch("https://emailrep.io/" + emailToCheck)
-        .then((result) => result.json())
-        .then(
-          (result) => {
-            setItems(result);
-            setIsLoaded(true);
-            console.log(result);
+      fetch(
+        "https://cors-anywhere.herokuapp.com/https://emailrep.io/example@gmail.com",
+        {
+          method  : 'GET',
+          headers: {
+            "User-Agent": "RKD412",
           },
+        }
+      ).then(
+        (result) => {
+          setItems(result);
+          setIsLoaded(true);
+          console.log(result);
+        },
 
-          (error) => {
-            setError(error);
-            setIsLoaded(true);
-            console.log(error);
-          }
-        );
+        (error) => {
+          setError(error);
+          setIsLoaded(true);
+          console.log(error);
+        }
+      );
     }
   };
 
@@ -40,11 +46,6 @@ const EmailChecker = () => {
     setEmailToCheck(e.target.value);
     console.log("https://emailrep.io/" + emailToCheck);
   };
-
-  useEffect(
-    () => console.log(items, error, isLoaded),
-    [items, error, isLoaded]
-  );
 
   return (
     <div

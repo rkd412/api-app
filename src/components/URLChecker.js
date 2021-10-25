@@ -4,10 +4,14 @@ import validator from "validator";
 
 import styles from "./URLChecker.module.css";
 
+const API_KEY = process.env.REACT_APP_API_KEY;
+
+const API_URL =
+  "https://safebrowsing.googleapis.com/v4/threatMatches:find?key=" + API_KEY;
+
 const URLChecker = () => {
   const [isSafe, setIsSafe] = useState("neutral");
   const [urlToCheck, setUrlToCheck] = useState("");
-  const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(null);
   const [items, setItems] = useState("");
 
@@ -36,7 +40,7 @@ const URLChecker = () => {
         }),
       };
 
-      fetch("", requestOptions)
+      fetch(API_URL, requestOptions)
         .then((result) => result.json())
         .then(
           (result) => {
@@ -46,7 +50,7 @@ const URLChecker = () => {
           },
 
           (error) => {
-            setError(error);
+            console.log(error);
             setIsLoaded(true);
             setIsLoaded(false);
           }
@@ -57,7 +61,6 @@ const URLChecker = () => {
   const valueChangeHandler = (e) => {
     e.preventDefault();
     setUrlToCheck(e.target.value);
-    console.log(validator.isURL(urlToCheck));
     setIsSafe("neutral");
   };
 
@@ -70,14 +73,6 @@ const URLChecker = () => {
       setIsSafe("unsafe");
     }
   }, [isLoaded, items]);
-
-  useEffect(
-    () =>
-      isLoaded
-        ? console.log(items) && console.log(error)
-        : "The fuck happened?",
-    [isLoaded, items, error]
-  );
 
   return (
     <div
@@ -100,9 +95,11 @@ const URLChecker = () => {
       </label>
       <button onClick={submitHandler}>Submit</button>
       {items && isSafe === "unsafe" && (
-        <p className={styles["clickable"]}>{items.matches[0].threatType}</p>
+        <p className={styles["clickable"]}>
+          {items.matches[0].threatType} - DO NOT USE!!!
+        </p>
       )}
-      {items && isSafe === "safe" && <p>Seems alright! No Matches</p>}
+      {items && isSafe === "safe" && <p>Seems safe!</p>}
     </div>
   );
 };
