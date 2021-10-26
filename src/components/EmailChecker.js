@@ -7,34 +7,24 @@ import styles from "./EmailChecker.module.css";
 const EmailChecker = () => {
   const [isSafe, setIsSafe] = useState("neutral");
   const [emailToCheck, setEmailToCheck] = useState("");
-  const [error, setError] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(null);
-  const [items, setItems] = useState(null);
 
+  /*API not working at the moment*/
+  
   const submitHandler = (e) => {
     if (!validator.isEmail(emailToCheck)) {
       alert("Enter valid email!");
       setIsSafe("neutral");
     } else {
-      e.preventDefault();
-      fetch(
-        "https://cors-anywhere.herokuapp.com/https://emailrep.io/example@gmail.com",
-        {
-          method  : 'GET',
-          headers: {
-            "User-Agent": "RKD412",
-          },
-        }
-      ).then(
+      fetch("https://emailrep.io/example@gmail.com", {
+        headers: {
+          "User-Agent": "RKD412",
+        },
+      }).then(
         (result) => {
-          setItems(result);
-          setIsLoaded(true);
           console.log(result);
         },
 
         (error) => {
-          setError(error);
-          setIsLoaded(true);
           console.log(error);
         }
       );
