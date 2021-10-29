@@ -11,7 +11,6 @@ const URLChecker = () => {
   const [items, setItems] = useState("");
 
   const submitHandler = (e) => {
-    console.log(process.env.REACT_APP_API_URL);
     if (!validator.isURL(urlToCheck)) {
       alert("Enter valid URL!");
     } else {
