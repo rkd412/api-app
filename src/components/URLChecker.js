@@ -4,11 +4,6 @@ import validator from "validator";
 
 import styles from "./URLChecker.module.css";
 
-const API_KEY = process.env.REACT_APP_API_KEY;
-
-const API_URL =
-  "https://safebrowsing.googleapis.com/v4/threatMatches:find?key=" + API_KEY;
-
 const URLChecker = () => {
   const [isSafe, setIsSafe] = useState("neutral");
   const [urlToCheck, setUrlToCheck] = useState("");
@@ -40,10 +35,11 @@ const URLChecker = () => {
         }),
       };
 
-      fetch(API_URL, requestOptions)
+      fetch(REACT_APP_API_URL, requestOptions)
         .then((result) => result.json())
         .then(
           (result) => {
+            console.log(result);
             setItems(result);
             setIsLoaded(true);
             setIsLoaded(false);
@@ -84,7 +80,7 @@ const URLChecker = () => {
           : styles["unsafe"]
       }
     >
-      <h1>URL Safety Checker</h1>
+      <h1>URL Malware Checker</h1>
       <label>
         <input
           type="text"
