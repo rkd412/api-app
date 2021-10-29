@@ -7,8 +7,6 @@ import styles from "./EmailChecker.module.css";
 const EmailChecker = () => {
   const [isSafe, setIsSafe] = useState("neutral");
   const [emailToCheck, setEmailToCheck] = useState("");
-
-  /*API not working at the moment*/
   
   const submitHandler = (e) => {
     if (!validator.isEmail(emailToCheck)) {
