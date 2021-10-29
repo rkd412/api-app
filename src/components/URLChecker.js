@@ -35,7 +35,7 @@ const URLChecker = () => {
         }),
       };
 
-      fetch(REACT_APP_API_URL, requestOptions)
+      fetch(process.env.REACT_APP_API_URL, requestOptions)
         .then((result) => result.json())
         .then(
           (result) => {
