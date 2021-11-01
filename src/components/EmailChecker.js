@@ -7,15 +7,16 @@ import styles from "./EmailChecker.module.css";
 const EmailChecker = () => {
   const [isSafe, setIsSafe] = useState("neutral");
   const [emailToCheck, setEmailToCheck] = useState("");
-  
+
   const submitHandler = (e) => {
     if (!validator.isEmail(emailToCheck)) {
       alert("Enter valid email!");
       setIsSafe("neutral");
     } else {
-      fetch("https://emailrep.io/example@gmail.com", {
+      fetch("https://cors-anywhere.herokuapp.com/https://emailrep.io/rkdavis15@gmail.com", {
         headers: {
-          "User-Agent": "RKD412",
+          "User-Agent": "https://infallible-khorana-72773f.netlify.app/",
+         
         },
       }).then(
         (result) => {
