@@ -52,7 +52,7 @@ const EmailChecker = () => {
           : styles["safe"]
       }
     >
-      <h1>Address Spam Checker</h1>
+      <h1>Spam Address Checker</h1>
       <label>
         <input
           type="text"
